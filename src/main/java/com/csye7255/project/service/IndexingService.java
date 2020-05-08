@@ -32,7 +32,6 @@ public class IndexingService {
     	return jedisPool;
     } 
 
-
     public RestHighLevelClient restHighLevelClient() {
     	restClient =  new RestHighLevelClient(RestClient.builder(new HttpHost("localhost", 9200)).setRequestConfigCallback(requestConfigBuilder ->
         requestConfigBuilder
@@ -60,7 +59,6 @@ public class IndexingService {
                     String objectType = jo.getString("objectType");
                     String objectId = jo.getString("objectId");
                     restClient.index(new IndexRequest("plan_index", objectType, objectId).source(bytes, XContentType.JSON));
-                   // restHighLevelClient.close();
                     logger.info("Index: plan_index, "+"Type="+objectType+" , Id="+objectId+" added to ElasticSearch.");
                 } catch (IOException e) {
                     logger.error("ElasticSearch add index error:"+e);
@@ -68,7 +66,6 @@ public class IndexingService {
                 String message = new String(bytes, StandardCharsets.UTF_8);
                 logger.info("Message get: "+message);
             }
-
             jedis.close();
         }
     }

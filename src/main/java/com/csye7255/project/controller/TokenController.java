@@ -28,8 +28,7 @@ import java.util.Date;
 @RestController
 public class TokenController {
 	
-	@Value("${spring.aes.finalKey}")
-    private static String finalKey;
+    private static String finalKey = "0123456789abcdef";
 	
     public static String finalToken ;
     

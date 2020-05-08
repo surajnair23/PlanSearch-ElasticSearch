@@ -1,0 +1,282 @@
+{
+	"info": {
+		"_postman_id": "f871aad1-5aa5-4fb6-9e4d-ea268c706900",
+		"name": "BDI Demo 3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/token",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/plan",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "AoLPptH62/mnhKM7uUxsh/tBY88dlDrQ2W2qT6VcdfaSnKthe1FPP1slwZjh2HSK8vGJqnJCFBz282KIdjkuvidxgqFK1yh75qIoP58vrWE=",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"planCostShares\": {\n        \"deductible\": 2000,\n        \"_org\": \"example.com\",\n        \"copay\": 23,\n        \"objectId\": \"1234vxc2324sdf-501\",\n        \"objectType\": \"membercostshare\"\n    },\n    \"linkedPlanServices\": [\n        {\n            \"linkedService\": {\n                \"_org\": \"example.com\",\n                \"objectId\": \"1234520xvc30asdf-502\",\n                \"objectType\": \"service\",\n                \"name\": \"Yearly physical\"\n            },\n            \"planserviceCostShares\": {\n                \"deductible\": 10,\n                \"_org\": \"example.com\",\n                \"copay\": 0,\n                \"objectId\": \"1234512xvc1314asdfs-503\",\n                \"objectType\": \"membercostshare\"\n            },\n            \"_org\": \"example.com\",\n            \"objectId\": \"27283xvx9asdff-504\",\n            \"objectType\": \"planservice\"\n        },\n        {\n            \"linkedService\": {\n                \"_org\": \"example.com\",\n                \"objectId\": \"1234520xvc30sfs-505\",\n                \"objectType\": \"service\",\n                \"name\": \"well baby\"\n            },\n            \"planserviceCostShares\": {\n                \"deductible\": 10,\n                \"_org\": \"example.com\",\n                \"copay\": 175,\n                \"objectId\": \"1234512xvc1314sdfsd-506\",\n                \"objectType\": \"membercostshare\"\n            },\n            \"_org\": \"example.com\",\n            \"objectId\": \"27283xvx9sdf-507\",\n            \"objectType\": \"planservice\"\n        }\n    ],\n    \"_org\": \"example.com\",\n    \"objectId\": \"12xvxc345ssdsds-508\",\n    \"objectType\": \"plan\",\n    \"planType\": \"inNetwork\",\n    \"creationDate\": \"12-12-2017\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/plan",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"plan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/plan/plan_12xvxc345ssdsds-508",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "AoLPptH62/mnhKM7uUxsh/tBY88dlDrQ2W2qT6VcdfaSnKthe1FPP1slwZjh2HSKzq1yGwMRo7TmI/c2w4BHzDCaVY7Sd4pVSd1jMYT90Ak=",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Etag",
+						"value": "\"d91b4aa8-f85f-4ab7-a158-ff814d464f30\"",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/plan/plan_12xvxc345ssdsds-508",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"plan",
+						"plan_12xvxc345ssdsds-508"
+					],
+					"query": [
+						{
+							"key": "Etag",
+							"value": "\"d91b4aa8-f85f-4ab7-a158-ff814d464f30\"",
+							"disabled": true
+						}
+					]
+				},
+				"description": "etag from first get"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/plan",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "AoLPptH62/mnhKM7uUxsh/tBY88dlDrQ2W2qT6VcdfaSnKthe1FPP1slwZjh2HSK8vGJqnJCFBz282KIdjkuvrH2s1Qsho3pTqf+NsOodEY=",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"planCostShares\": {\n        \"deductible\": 2000,\n        \"_org\": \"example.com\",\n        \"copay\": 23,\n        \"objectId\": \"1234vxc2324sdf-501\",\n        \"objectType\": \"membercostshare\"\n    },\n    \"linkedPlanServices\": [\n        {\n            \"linkedService\": {\n                \"_org\": \"example.com\",\n                \"objectId\": \"1234520xvc30asdf-502\",\n                \"objectType\": \"service\",\n                \"name\": \"Yearly physical\"\n            },\n            \"planserviceCostShares\": {\n                \"deductible\": 10,\n                \"_org\": \"example.com\",\n                \"copay\": 0,\n                \"objectId\": \"1234512xvc1314asdfs-503\",\n                \"objectType\": \"membercostshare\"\n            },\n            \"_org\": \"example.com\",\n            \"objectId\": \"27283xvx9asdff-504\",\n            \"objectType\": \"planservice\"\n        },\n        {\n            \"linkedService\": {\n                \"_org\": \"example.com\",\n                \"objectId\": \"1234520xvc30sfs-505\",\n                \"objectType\": \"service\",\n                \"name\": \"well baby\"\n            },\n            \"planserviceCostShares\": {\n                \"deductible\": 10,\n                \"_org\": \"example.com\",\n                \"copay\": 175,\n                \"objectId\": \"1234512xvc1314sdfsd-506\",\n                \"objectType\": \"membercostshare\"\n            },\n            \"_org\": \"example.com\",\n            \"objectId\": \"27283xvx9sdf-507\",\n            \"objectType\": \"planservice\"\n        }\n    ],\n    \"_org\": \"example.com\",\n    \"objectId\": \"12xvxc345ssdsds-508\",\n    \"objectType\": \"plan\",\n    \"planType\": \"inNetwork\",\n    \"creationDate\": \"12-12-2017\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/plan",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"plan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/plan/plan_12xvxc345ssdsds-508",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "AoLPptH62/mnhKM7uUxsh/tBY88dlDrQ2W2qT6VcdfaSnKthe1FPP1slwZjh2HSK8vGJqnJCFBz282KIdjkuvrH2s1Qsho3pTqf+NsOodEY=",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Etag",
+						"value": "\"31b77c4c-8c0c-4844-a452-e84bce815dc4\"",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/plan/plan_12xvxc345ssdsds-508",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"plan",
+						"plan_12xvxc345ssdsds-508"
+					],
+					"query": [
+						{
+							"key": "Etag",
+							"value": "\"d91b4aa8-f85f-4ab7-a158-ff814d464f30\"",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/plan/plan_12xvxc345ssdsds-508",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "AoLPptH62/mnhKM7uUxsh/tBY88dlDrQ2W2qT6VcdfaSnKthe1FPP1slwZjh2HSKICUdwtQioFmVEtxwtlBstZIw8vsBrLSyNNWvMbj4M/g=",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "If-Match",
+						"value": "\"ae2abc32-e9a6-493d-8d4a-0ef6dd39382e\"",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"linkedService\": {\n        \"name\": \"patch work\",\n        \"_org\": \"example.com\",\n        \"objectId\": \"1234520xvc30sfs-511\",\n        \"objectType\": \"service\"\n    },\n    \"planserviceCostShares\": {\n        \"deductible\": 11,\n        \"_org\": \"example.com\",\n        \"copay\": 175,\n        \"objectId\": \"1234512xvc1314sdfsd-512\",\n        \"objectType\": \"membercostshare\"\n    },\n    \"_org\": \"example.com\",\n    \"objectId\": \"27283xvx9sdf-513\",\n    \"objectType\": \"planservice\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/plan/plan_12xvxc345ssdsds-508",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"plan",
+						"plan_12xvxc345ssdsds-508"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/plan/plan_12xvxc345ssdsds-10",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "AoLPptH62/mnhKM7uUxsh/tBY88dlDrQ2W2qT6VcdfaSnKthe1FPP1slwZjh2HSKICUdwtQioFmVEtxwtlBstZIw8vsBrLSyNNWvMbj4M/g=",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "If-Match",
+						"value": "\"1cece71f-eb70-4af0-b1a6-1bcddb2a840c\"",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"planCostShares\": {\n        \"deductible\": 2000,\n        \"_org\": \"example.com.test\",\n        \"copay\": 232,\n        \"objectId\": \"1234vxc2324sdf-501xxx\",\n        \"objectType\": \"membercostshare\"\n    },\n    \"linkedPlanServices\": [\n        {\n            \"linkedService\": {\n                \"name\": \"patch work\",\n                \"_org\": \"example.com\",\n                \"objectId\": \"1234520xvc30sfs-511\",\n                \"objectType\": \"service\"\n            },\n            \"planserviceCostShares\": {\n                \"deductible\": 11,\n                \"_org\": \"example.com\",\n                \"copay\": 110,\n                \"objectId\": \"1234512xvc1314sdfsd-512\",\n                \"objectType\": \"membercostshare\"\n            },\n            \"_org\": \"example.com\",\n            \"objectId\": \"27283xvx9sdf-513\",\n            \"objectType\": \"planservice\"\n        },\n        {\n            \"linkedService\": {\n                \"name\": \"Yearly physical\",\n                \"_org\": \"example.com\",\n                \"objectId\": \"1234520xvc30asdf-502\",\n                \"objectType\": \"service\"\n            },\n            \"planserviceCostShares\": {\n                \"deductible\": 10,\n                \"_org\": \"example.com\",\n                \"copay\": 130,\n                \"objectId\": \"1234512xvc1314asdfs-503\",\n                \"objectType\": \"membercostshare\"\n            },\n            \"_org\": \"example.com\",\n            \"objectId\": \"27283xvx9asdff-504\",\n            \"objectType\": \"planservice\"\n        },\n        {\n            \"linkedService\": {\n                \"name\": \"well baby\",\n                \"_org\": \"example.com\",\n                \"objectId\": \"1234520xvc30sfs-505\",\n                \"objectType\": \"service\"\n            },\n            \"planserviceCostShares\": {\n                \"deductible\": 16,\n                \"_org\": \"example.com\",\n                \"copay\": 175,\n                \"objectId\": \"1234512xvc1314sdfsd-506\",\n                \"objectType\": \"membercostshare\"\n            },\n            \"_org\": \"example.com\",\n            \"objectId\": \"27283xvx9sdf-507\",\n            \"objectType\": \"planservice\"\n        }\n    ],\n    \"planType\": \"inNetwork\",\n    \"_org\": \"example.com\",\n    \"creationDate\": \"12-12-2017\",\n    \"objectId\": \"12xvxc345ssdsds-508\",\n    \"objectType\": \"plan\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/plan/plan_12xvxc345ssdsds-508",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"plan",
+						"plan_12xvxc345ssdsds-508"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

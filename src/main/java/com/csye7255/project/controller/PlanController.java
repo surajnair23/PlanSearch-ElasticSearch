@@ -52,13 +52,11 @@ public class PlanController {
 
     @Autowired
     private TokenService tokenService;
-
-    boolean isFirst = false;
     
     //RestAPIs
     @GetMapping("/testPlan")
     public String getHealth() {    	
-    	return "Application works fine";//+ elasticPort;
+    	return "Application works fine";
     }
     
     @PostMapping(path = "/plan", consumes = "application/json", produces = "application/json")
@@ -67,7 +65,7 @@ public class PlanController {
         String token = headers.getFirst("Authorization");
         Map<String,String> validEtag = planService.createPlan(token,plan);
         String etag = validEtag.get("etag") ;
-        System.out.println(etag);
+        System.out.println("ETag generated: "+etag);
 
         if(validEtag.size()>1){
             return ResponseEntity.status(HttpStatus.CREATED).eTag(etag).body("Data Saved. PlanId: " + validEtag.get("planid"));
@@ -82,8 +80,7 @@ public class PlanController {
         try {
             String token = header.getFirst("Authorization");
             if (planId != null) {
-                String etag = header.getETag();
-                Map<String, String> validEtag = planService.getPlan(token, planId, etag,isFirst);
+                Map<String, String> validEtag = planService.getPlan(token, planId, header.getETag());
                 return ResponseEntity.status(HttpStatus.OK).eTag(validEtag.get("etag")).body(validEtag.get("plan"));
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).eTag(planService.getEtags(planId)).body("PlanId not present");
@@ -106,15 +103,17 @@ public class PlanController {
     @DeleteMapping(path = "/plan/{id}")
     public ResponseEntity<String> deletePlan(@PathVariable(value = "id") String planId, @RequestHeader HttpHeaders headers) {
         String token = headers.getFirst("Authorization");
-        if(!(tokenService.validateToken(token))) throw new BadRequest("Token is expired");
+        if(!(tokenService.validateToken(token))) 
+        	throw new BadRequest("Token is expired");
+        
         if (planId != null) {
             if ((new PlanService().deleteData(planId)) > 0) {
                 planService.removeEtags(planId);
                 return ResponseEntity.status(HttpStatus.OK).body("Delete Successful!");
             } else
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Plan Id Not Found");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Plan id Not Found");
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Enter the plan ID!!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Enter the plan id for seccessfull deletion!!");
         }
     }
 
@@ -155,7 +154,6 @@ public class PlanController {
         Jedis jedis = planService.jedisPool.getResource(); //indexingService.getJedisPool().getResource();
         try {
             String etag = null;
-
             String token = headers.getFirst("Authorization");
             if (!(tokenService.validateToken(token))) throw new BadRequest("Token is expired");
             if (headers.getIfMatch().size() > 0) {
@@ -209,8 +207,6 @@ public class PlanController {
                         jedis.set((String) entry.getKey(), (String) entry.getValue());
                     }
                     String fullPlan = jedis.get(planId);
-
-                    System.out.println(fullPlan + "\n\n\n");
                     String[] split = fullPlan.split("\\[");
                     String x = "[\\\"" + input.getString("objectType") + "_" + input.getString("objectId") + "\\\",";
                     fullPlan = split[0] + x + split[1];
@@ -218,7 +214,6 @@ public class PlanController {
                     planService.removeEtags(planId);
                     etag = UUID.randomUUID().toString();
                     EtagMap.getEtags().put(planId + "p", etag);
-                    System.out.println(new PlanService().readData(fullPlan).toString() + "\n xxx" + planId.split("_")[1]);
                     String IndexQueue = "RedisIndexQueue";
                     jedis.rpush(IndexQueue.getBytes(), new PlanService().readData(fullPlan).toString().getBytes(StandardCharsets.UTF_8));
                     jedis.close();

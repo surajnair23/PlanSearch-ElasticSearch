@@ -39,6 +39,8 @@ public class PlanService {
     @Autowired
     private TokenService tokenService;
     
+    boolean isFirst = true;
+    
     private static IndexingService indexingService = new IndexingService();
     
     Map<String,String> out = new HashMap<>();
@@ -54,7 +56,6 @@ public class PlanService {
         nestedObject(jsonData);
         return map;
     }
-
 
     public static Object    nestedObject(JSONObject jsonNestedObject) {
         JSONObject object = new JSONObject();
@@ -77,8 +78,6 @@ public class PlanService {
         EtagMap.getEtags().put(jsonNestedObject.get("objectType") + "_" + jsonNestedObject.get("objectId"), UUID.randomUUID().toString());
         return jsonNestedObject.get("objectType") + "_" + jsonNestedObject.get("objectId");
     }
-
-
 
     public JSONObject readData(String planData) {
         Jedis jedis = jedisPool.getResource();
@@ -109,7 +108,7 @@ public class PlanService {
         Jedis jedis = jedisPool.getResource();
         System.out.println(jedis.get(planId));
         String id = "";
-        String type = "";
+        String type;
             try {
                 if(planId != null) {
                     id = planId.split("_")[1];
@@ -219,7 +218,7 @@ public class PlanService {
         else throw new BadRequest("Token is expired");
     }
 
-    public Map<String,String> getPlan(String token, String id, String etag, boolean isFirst){
+    public Map<String,String> getPlan(String token, String id, String etag){
     	out.clear();
         if(!tokenService.validateToken(token)) throw new BadRequest("Token is expired");
         else {
@@ -228,22 +227,25 @@ public class PlanService {
                     if (EtagMap.getEtags().get(id+"g").equals(etag))
                         throw new Notmodified("Data has not been updated since last time!");
                     else{
-                    etag = EtagMap.getEtags().get(id+"g");
+                    	etag = EtagMap.getEtags().get(id+"g");
+                    	String plan = jedisPool.getResource().get(id);
+                    	etag = EtagMap.getEtags().put(id+"g", etag);
+                        out.put("plan", readData(plan).toString());
+                        out.put("etag", EtagMap.getEtags().get(id+"p"));
+                        return out;
+                    }
                 }
+            }else if(etag ==null && isFirst){
+            	isFirst = false;
+            	String plan = jedisPool.getResource().get(id);
+            	if (plan == null) 
+                	throw new ResourceNotFound("plan","id", id);
+            	etag = EtagMap.getEtags().put(id+"g", etag);
+                out.put("plan", readData(plan).toString());
+                out.put("etag", EtagMap.getEtags().get(id+"p"));
+                return out;
             }
-            String plan = jedisPool.getResource().get(id);
-            if (plan == null) 
-            	throw new ResourceNotFound("plan","id", id);
-            
-            if(isFirst) {
-            	etag = EtagMap.getEtags().get(id+"p");
-            }
-//            etag = etag != null ? etag : EtagMap.getEtags().get(id+"p");
-            EtagMap.getEtags().put(id+"g", etag);
-            out.put("plan", readData(plan).toString());
-            out.put("etag", EtagMap.getEtags().get(id+"p"));
             return out;
-            } else throw new PreconditionFailed("Etag is not present");
         }
     }
 

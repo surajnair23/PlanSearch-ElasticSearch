@@ -17,8 +17,7 @@ import java.util.Date;
 @Service
 public class TokenService {
 
-	@Value("${spring.aes.finalKey}")
-    private static String finalKey;
+    private static String finalKey="0123456789abcdef";
 
     public boolean validateToken(String token) throws RuntimeException{
         if(token==null || token.isEmpty()) 
