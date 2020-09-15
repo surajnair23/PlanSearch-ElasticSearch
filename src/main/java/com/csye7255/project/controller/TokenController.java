@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,7 +33,8 @@ public class TokenController {
 	
     public static String finalToken ;
     
-    @RequestMapping(value="/token",method = RequestMethod.GET)
+//    @RequestMapping(value="/token",method = RequestMethod.GET)
+    @GetMapping("/token")
     public ResponseEntity getToken(@RequestHeader HttpHeaders headers) throws UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException, JSONException {
 
         String initVector = "RandomInitVector";
@@ -54,7 +56,11 @@ public class TokenController {
 
 
         IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
+        
+        //vendor independant secret key from JAVAX.CRYPTO
         SecretKeySpec skeySpec = new SecretKeySpec(finalKey.getBytes("UTF-8"), "AES");
+        
+        //Java Crypto Extension
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
         cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
         //encrypting token
